@@ -39,7 +39,7 @@ public class InputField extends Element {
         type(text + Keys.RETURN);
     }
 
-    public void setValue(String text) {
+    public void setValueByJS(String text) {
         waitUntilDisplayedAndAssert(this);
         ((JavascriptExecutor) DRIVER()).executeScript("arguments[0].value = '" + text + "';", this.find());
     }

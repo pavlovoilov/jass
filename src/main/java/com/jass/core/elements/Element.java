@@ -1,10 +1,12 @@
 package com.jass.core.elements;
 
 import org.openqa.selenium.By;
+import org.openqa.selenium.WebDriverException;
 import org.openqa.selenium.WebElement;
 
 import java.util.List;
 
+import static com.jass.core.handlers.JSHandler.executeJavaScript;
 import static com.jass.core.handlers.LocatorBuilder.buildXpath;
 import static com.jass.core.webdrivers.WebDriverManager.DRIVER;
 
@@ -73,9 +75,25 @@ public class Element {
 
     public boolean isDisplayed() {
         try {
-            return find().isDisplayed();
+            return this.find().isDisplayed();
         } catch (Exception e) {
             return false;
+        }
+    }
+
+    public void scrollToElementBottom() {
+        try {
+            executeJavaScript("arguments[0].scrollIntoView();", this.find());
+        } catch (WebDriverException e) {
+            // Do nothing
+        }
+    }
+
+    public void scrollIntoView() {
+        try {
+            executeJavaScript("arguments[0].scrollIntoView(false);", this.find());
+        } catch (WebDriverException e) {
+            // Do nothing
         }
     }
 
