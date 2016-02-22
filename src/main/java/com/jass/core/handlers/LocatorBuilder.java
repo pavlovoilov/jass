@@ -20,7 +20,7 @@ public class LocatorBuilder {
         return By.xpath(String.format(xpathExpression, text.toString()));
     }
 
-    public static By buildXpath(String xpathExpression, Object[] args) {
+    public static By buildXpath(String xpathExpression, Object... args) {
         return By.xpath(String.format(xpathExpression, args));
     }
 

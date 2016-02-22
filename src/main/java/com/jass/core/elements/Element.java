@@ -4,6 +4,7 @@ import org.openqa.selenium.By;
 import org.openqa.selenium.WebDriverException;
 import org.openqa.selenium.WebElement;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import static com.jass.core.handlers.JSHandler.executeJavaScript;
@@ -14,34 +15,48 @@ public class Element {
 
     private static final int DEFAULT_TIMEOUT = 5000;
 
-    private By baseLocator;
+    private By baseLocator = By.xpath("/html");
     private By relativeLocator;
     private String stringLocator;
-    private String elementDescription;
-    private int waitTimeout;
+    private String elementDescription = "Element";
+    private int waitTimeout = DEFAULT_TIMEOUT;
+    private WebElement webElement;
 
-    public Element(By baseLocator, By relativeLocator, String stringLocator, String elementDescription, int waitTimeout) {
-        this.baseLocator = baseLocator;
-        this.relativeLocator = relativeLocator;
+    public Element(String stringLocator) {
         this.stringLocator = stringLocator;
+    }
+
+    public Element(By relativeLocator) {
+        this.relativeLocator = relativeLocator;
+    }
+
+    public Element(WebElement webElement) {
+        this.webElement = webElement;
+    }
+
+    public <T extends Element> T setBaseLocator(By baseLocator) {
+        this.baseLocator = baseLocator;
+        return (T) this;
+    }
+
+    public <T extends Element> T setRelativeLocator(By relativeLocator) {
+        this.relativeLocator = relativeLocator;
+        return (T) this;
+    }
+
+    public <T extends Element> T setStringLocator(String stringLocator) {
+        this.stringLocator = stringLocator;
+        return (T) this;
+    }
+
+    public <T extends Element> T setDescription(String elementDescription) {
         this.elementDescription = elementDescription;
+        return (T) this;
+    }
+
+    public <T extends Element> T setTimeout(int waitTimeout) {
         this.waitTimeout = waitTimeout;
-    }
-
-    public Element(By relativeLocator, String elementDescription) {
-        this(null, relativeLocator, null, elementDescription, DEFAULT_TIMEOUT);
-    }
-
-    public Element(By relativeLocator, String elementDescription, int waitTimeout) {
-        this(null, relativeLocator, null, elementDescription, waitTimeout);
-    }
-
-    public Element(String stringLocator, String elementDescription, int waitTimeout) {
-        this(null, null, stringLocator, elementDescription, waitTimeout);
-    }
-
-    public Element(By baseLocator, By relativeLocator, String elementDescription) {
-        this(baseLocator, relativeLocator, null, elementDescription, DEFAULT_TIMEOUT);
+        return (T) this;
     }
 
     public String getDescription() {
@@ -52,23 +67,37 @@ public class Element {
         return waitTimeout;
     }
 
-    public Element format(Object... object) {
+    public WebElement getWebElement() {
+        return find();
+    }
+
+    public <T extends Element> T format(Object... object) {
         relativeLocator = buildXpath(stringLocator, object);
         elementDescription = String.format(elementDescription, object);
-        return this;
+        return (T) this;
     }
 
     public WebElement find() {
-        return DRIVER().findElement(baseLocator).findElement(relativeLocator);
+        if (webElement == null) {
+            return DRIVER().findElement(baseLocator).findElement(relativeLocator);
+        }
+        return webElement;
     }
 
-    public List<WebElement> findAll() {
-        return DRIVER().findElement(baseLocator).findElements(relativeLocator);
+    public List<Element> findAll() {
+        List<WebElement> webElements = DRIVER().findElement(baseLocator).findElements(relativeLocator);
+        List<Element> elementsList = new ArrayList<>();
+        for (WebElement webElement: webElements) {
+            elementsList.add(new Element(webElement));
+        }
+        return elementsList;
     }
 
-    public WebElement getFirstDisplayedElement() {
-        for (WebElement element: findAll()) {
-            if (element.isDisplayed()) return element;
+    public <T extends Element> T getFirstDisplayedElement() {
+        for (Element element: findAll()) {
+            if (element.isDisplayed()) {
+                return (T) element;
+            }
         }
         throw new AssertionError("No visible elements found with such locator!");
     }
@@ -81,27 +110,21 @@ public class Element {
         }
     }
 
-    public void scrollToElementBottom() {
+    public <T extends Element> T scrollToElementBottom() {
         try {
             executeJavaScript("arguments[0].scrollIntoView();", this.find());
         } catch (WebDriverException e) {
             // Do nothing
         }
+        return (T) this;
     }
 
-    public void scrollIntoView() {
+    public <T extends Element> T scrollIntoView() {
         try {
             executeJavaScript("arguments[0].scrollIntoView(false);", this.find());
         } catch (WebDriverException e) {
             // Do nothing
         }
-    }
-
-    public Button asButton() {
-        return new Button(baseLocator, relativeLocator, stringLocator, elementDescription, waitTimeout);
-    }
-
-    public Checkbox asCheckbox() {
-        return new Checkbox(baseLocator, relativeLocator, stringLocator, elementDescription, waitTimeout);
+        return (T) this;
     }
 }

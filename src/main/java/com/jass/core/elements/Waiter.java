@@ -79,13 +79,12 @@ public class Waiter {
     }
 
     public static boolean waitUntilHidden(Element element, int timeout) {
-        int hangsTimeout = 120000;
         int counter = 1000;
-        while (element.isDisplayed() && counter != timeout && counter != hangsTimeout) {
+        while (element.isDisplayed() && counter <= timeout && counter != DEFAULT_TIMEOUT_MS) {
             sleep(1000);
             counter += 1000;
         }
-        return counter != timeout && counter != hangsTimeout;
+        return counter != timeout && counter != DEFAULT_TIMEOUT_MS;
     }
 
     public static boolean waitUntilDisplayed(Element element) {
@@ -93,12 +92,11 @@ public class Waiter {
     }
 
     public static boolean waitUntilDisplayed(Element element, int timeout) {
-        int hangsTimeout = 120000;
         int counter = 1000;
-        while (!element.isDisplayed() && counter != timeout && counter != hangsTimeout) {
+        while (!element.isDisplayed() && counter <= timeout && counter != DEFAULT_TIMEOUT_MS) {
             sleep(1000);
             counter += 1000;
         }
-        return counter != timeout && counter != hangsTimeout;
+        return counter != timeout && counter != DEFAULT_TIMEOUT_MS;
     }
 }

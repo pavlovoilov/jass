@@ -2,30 +2,24 @@ package com.jass.core.elements;
 
 import com.jass.core.handlers.JSHandler;
 import org.openqa.selenium.By;
+import org.openqa.selenium.WebElement;
 
 import static com.jass.core.elements.Waiter.waitUntilDisplayedAndAssert;
 import static com.jass.utils.SleepUtils.sleep;
 
 public class Checkbox extends Element {
 
-    public Checkbox(By baseLocator, By relativeLocator, String stringLocator, String elementDescription, int waitTimeout) {
-        super(baseLocator, relativeLocator, stringLocator, elementDescription, waitTimeout);
+
+    public Checkbox(String stringLocator) {
+        super(stringLocator);
     }
 
-    public Checkbox(By relativeLocator, String elementDescription) {
-        super(relativeLocator, elementDescription);
+    public Checkbox(By relativeLocator) {
+        super(relativeLocator);
     }
 
-    public Checkbox(By relativeLocator, String elementDescription, int waitTimeout) {
-        super(relativeLocator, elementDescription, waitTimeout);
-    }
-
-    public Checkbox(String stringLocator, String elementDescription, int waitTimeout) {
-        super(stringLocator, elementDescription, waitTimeout);
-    }
-
-    public Checkbox(By baseLocator, By relativeLocator, String elementDescription) {
-        super(baseLocator, relativeLocator, elementDescription);
+    public Checkbox(WebElement webElement) {
+        super(webElement);
     }
 
     public boolean isSelected() {

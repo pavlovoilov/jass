@@ -33,7 +33,7 @@ public abstract class BasePage {
 
     public static boolean isPageObjectLoaded(Element element, int timeout, String errorMessage) {
         int counter = 0;
-        while (!element.isDisplayed() && counter != timeout && counter != PAGE_LOADING_HANGS_TIMEOUT) {
+        while (!element.isDisplayed() && counter <= timeout && counter != PAGE_LOADING_HANGS_TIMEOUT) {
             sleep(1000);
             counter += 1000;
             log.info("Loading page '" + errorMessage + "', counting: " + counter);

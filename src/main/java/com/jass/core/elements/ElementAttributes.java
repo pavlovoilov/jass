@@ -1,5 +1,8 @@
 package com.jass.core.elements;
 
+import java.util.ArrayList;
+import java.util.List;
+
 public class ElementAttributes {
 
     public static String getAttribute(Element element, String attribute) {
@@ -16,5 +19,11 @@ public class ElementAttributes {
 
     public static boolean isClassContains(Element element, String value) {
         return element.find().getAttribute("class").contains(value);
+    }
+
+    public static List<String> getTexts(Element element) {
+        List<String> resultList = new ArrayList<>();
+        element.findAll().forEach(item -> resultList.add(item.find().getText().trim()));
+        return resultList;
     }
 }

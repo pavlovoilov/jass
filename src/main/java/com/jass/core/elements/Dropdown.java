@@ -1,30 +1,23 @@
 package com.jass.core.elements;
 
 import org.openqa.selenium.By;
+import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.ui.Select;
 
 import static com.jass.core.elements.Waiter.waitUntilDisplayedAndAssert;
 
 public class Dropdown extends Element{
 
-    public Dropdown(By relativeLocator, String elementDescription) {
-        super(relativeLocator, elementDescription);
+    public Dropdown(String stringLocator) {
+        super(stringLocator);
     }
 
-    public Dropdown(By baseLocator, By relativeLocator, String stringLocator, String elementDescription, int waitTimeout) {
-        super(baseLocator, relativeLocator, stringLocator, elementDescription, waitTimeout);
+    public Dropdown(By relativeLocator) {
+        super(relativeLocator);
     }
 
-    public Dropdown(By relativeLocator, String elementDescription, int waitTimeout) {
-        super(relativeLocator, elementDescription, waitTimeout);
-    }
-
-    public Dropdown(String stringLocator, String elementDescription, int waitTimeout) {
-        super(stringLocator, elementDescription, waitTimeout);
-    }
-
-    public Dropdown(By baseLocator, By relativeLocator, String elementDescription) {
-        super(baseLocator, relativeLocator, elementDescription);
+    public Dropdown(WebElement webElement) {
+        super(webElement);
     }
 
     public void selectByVisibleText(String visibleText) {

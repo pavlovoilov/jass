@@ -6,10 +6,7 @@ import com.jass.core.webdrivers.WebDriverManager;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.testng.ITestResult;
-import org.testng.annotations.AfterClass;
-import org.testng.annotations.AfterMethod;
-import org.testng.annotations.BeforeClass;
-import org.testng.annotations.Listeners;
+import org.testng.annotations.*;
 
 @Listeners({TestCustomLogger.class})
 public abstract class BaseTest {
@@ -17,6 +14,11 @@ public abstract class BaseTest {
     private Logger log = LoggerFactory.getLogger(BaseTest.class);
     protected String testMethodName = "";
     protected ConsoleErrorsHandler consoleErrors = new ConsoleErrorsHandler();
+
+    @BeforeSuite
+    public void beforeSuite(){
+
+    }
 
     @BeforeClass
     public void beforeClass() {

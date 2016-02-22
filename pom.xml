@@ -10,16 +10,18 @@
 
 
     <properties>
-        <aspectj.version>1.7.4</aspectj.version>
+        <aspectj.version>1.8.3</aspectj.version>
         <selenium.version>2.47.1</selenium.version>
         <testng.version>6.9.8</testng.version>
         <allure.version>1.4.18</allure.version>
-        <maven-surefire-plugin-version>2.18.1</maven-surefire-plugin-version>
+        <maven-surefire-plugin-version>2.19</maven-surefire-plugin-version>
         <allure.maven.plugin>2.2</allure.maven.plugin>
         <apium.version>3.2.0</apium.version>
         <guava.version>19.0</guava.version>
         <maven.compiler.source>1.8</maven.compiler.source>
         <maven.compiler.target>1.8</maven.compiler.target>
+
+        <excludeGroups></excludeGroups>
     </properties>
 
     <dependencies>
@@ -27,11 +29,6 @@
             <groupId>org.testng</groupId>
             <artifactId>testng</artifactId>
             <version>${testng.version}</version>
-        </dependency>
-        <dependency>
-            <groupId>log4j</groupId>
-            <artifactId>log4j</artifactId>
-            <version>1.2.17</version>
         </dependency>
         <dependency>
             <groupId>ru.yandex.qatools.allure</groupId>
@@ -73,6 +70,16 @@
             <artifactId>java-client</artifactId>
             <version>${apium.version}</version>
         </dependency>
+        <dependency>
+            <groupId>org.slf4j</groupId>
+            <artifactId>slf4j-api</artifactId>
+            <version>1.7.7</version>
+        </dependency>
+        <dependency>
+            <groupId>org.hamcrest</groupId>
+            <artifactId>hamcrest-all</artifactId>
+            <version>1.3</version>
+        </dependency>
     </dependencies>
 
     <!--Allure Maven Plugin-->
@@ -93,36 +100,44 @@
     </reporting>
 
     <!--Profiles-->
-    <profiles>
-        <profile>
-            <id>ui</id>
-            <build>
-                <plugins>
-                    <plugin>
-                        <groupId>org.apache.maven.plugins</groupId>
-                        <artifactId>maven-surefire-plugin</artifactId>
-                        <version>${maven-surefire-plugin-version}</version>
-                        <configuration>
-                            <suiteXmlFiles>
-                                <suiteXmlFile>${project.build.testOutputDirectory}/${suite}.xml</suiteXmlFile>
-                            </suiteXmlFiles>
-                            <testFailureIgnore>false</testFailureIgnore>
-                            <argLine>
-                                -javaagent:${settings.localRepository}/org/aspectj/aspectjweaver/${aspectj.version}/aspectjweaver-${aspectj.version}.jar
-                            </argLine>
-                        </configuration>
-                        <dependencies>
-                            <dependency>
-                                <groupId>org.aspectj</groupId>
-                                <artifactId>aspectjweaver</artifactId>
-                                <version>${aspectj.version}</version>
-                            </dependency>
-                        </dependencies>
-                    </plugin>
-                </plugins>
-            </build>
-        </profile>
 
+    <build>
+
+        <testResources>
+            <testResource>
+                <directory>src/test/resources/</directory>
+                <filtering>true</filtering>
+                <targetPath>${project.build.testOutputDirectory}/</targetPath>
+            </testResource>
+        </testResources>
+
+        <plugins>
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-surefire-plugin</artifactId>
+                <version>${maven-surefire-plugin-version}</version>
+                <configuration>
+                    <excludedGroups>${excludeGroups}</excludedGroups>
+                    <suiteXmlFiles>
+                        <suiteXmlFile>${project.build.testOutputDirectory}/${suite}.xml</suiteXmlFile>
+                    </suiteXmlFiles>
+                    <testFailureIgnore>false</testFailureIgnore>
+                    <argLine>
+                        -javaagent:${settings.localRepository}/org/aspectj/aspectjweaver/${aspectj.version}/aspectjweaver-${aspectj.version}.jar
+                    </argLine>
+                </configuration>
+                <dependencies>
+                    <dependency>
+                        <groupId>org.aspectj</groupId>
+                        <artifactId>aspectjweaver</artifactId>
+                        <version>${aspectj.version}</version>
+                    </dependency>
+                </dependencies>
+            </plugin>
+        </plugins>
+    </build>
+
+    <profiles>
         <profile>
             <id>chrome</id>
         </profile>

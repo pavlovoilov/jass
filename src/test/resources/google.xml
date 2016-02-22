@@ -1,0 +1,22 @@
+<!DOCTYPE suite SYSTEM "http://testng.org/testng-1.0.dtd" >
+
+<suite name="Smoke" verbose="2"  parallel="tests" thread-count="${thread.count}">
+
+    <groups>
+        <run>
+            <exclude name="${driver}.specific"/>
+            <exclude name="${driver}.bug"/>
+        </run>
+    </groups>
+
+    <test name="Example">
+        <classes>
+            <class name="com.jass.exmpale.tests.TestClass"/>
+        </classes>
+    </test>
+    <test name="Example 2">
+        <classes>
+            <class name="com.jass.exmpale.tests.TestClassAnother"/>
+        </classes>
+    </test>
+</suite>
